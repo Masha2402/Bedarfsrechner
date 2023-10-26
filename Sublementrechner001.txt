@@ -1,0 +1,57 @@
+import tkinter as tk
+
+
+def berechne_werte():
+    geschlecht = geschlecht_var.get()
+    gewicht_str = kg_var.get().replace(',', '.')  
+    try:
+        gewicht = float(gewicht_str)
+    except ValueError:
+        ergebnis_label.config(text="Ungültige Eingabe für Körpergewicht")
+        return
+
+    if geschlecht == "Männer":
+        eaa = gewicht * 0.2
+        bcaa = gewicht * 15
+        protein = gewicht * 2.5
+        kreatin = 5
+        fett_prozent = 35
+        kohlenhydrate_prozent = 50
+        wasser = 3
+    else:
+        eaa = gewicht * 0.1
+        bcaa = gewicht * 5
+        protein = gewicht * 1.2
+        kreatin = 3.5
+        fett_prozent = 20
+        kohlenhydrate_prozent = 30
+        wasser = 2.2
+
+    fett = (fett_prozent / 100) * (eaa + bcaa + protein)
+    kohlenhydrate = (kohlenhydrate_prozent / 100) * (eaa + bcaa + protein)
+
+    ergebnis_label.config(text=f"EAA: {eaa}g, BCAA: {bcaa}g, Protein: {protein}g, Kreatin: {kreatin}g, Fett: {fett}g, Kohlenhydrate: {kohlenhydrate}g, Wasser: {wasser} Liter")
+
+# GUI 
+app = tk.Tk()
+app.title("Nährstoffrechner")
+
+geschlecht_label = tk.Label(app, text="Geschlecht:")
+geschlecht_label.pack()
+geschlecht_var = tk.StringVar()
+geschlecht_var.set("Männer")
+geschlecht_option = tk.OptionMenu(app, geschlecht_var, "Männer", "Frauen")
+geschlecht_option.pack()
+
+kg_label = tk.Label(app, text="Körpergewicht (in kg):")
+kg_label.pack()
+kg_var = tk.Entry(app)
+kg_var.pack()
+
+berechnen_button = tk.Button(app, text="Berechnen", command=berechne_werte)
+berechnen_button.pack()
+
+ergebnis_label = tk.Label(app, text="")
+ergebnis_label.pack()
+
+app.mainloop()
